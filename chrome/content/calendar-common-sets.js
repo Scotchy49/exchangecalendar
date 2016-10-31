@@ -75,6 +75,9 @@ exchForewardEvent.prototype = {
 		args.calendar =calendar;
 		args.onOk = this.callOnRightClick;
 		args.opener="exchWebService-onForEve";
+		
+		dump("\nxxxxxxx args"+JSON.stringify(args));
+		
 		this._window.openDialog("chrome://calendar/content/calendar-event-dialog-attendees.xul","_blank", "chrome,titlebar,modal,resizable",args);
 
 	},
@@ -97,7 +100,17 @@ exchForewardEvent.prototype = {
 
 	erForewardItemRequestOK : function _erForewardItemRequestOK(aForewardItemRequest, aResp)
 	{
-		alert(aResp);
+		if(aResp){
+			var title="Forwarding Event";
+			var msg=aResp;
+			 var image = "chrome://exchangecalendar-common/skin/images/notify-icon.png";
+			  var win = Components.classes['@mozilla.org/embedcomp/window-watcher;1'].
+			                      getService(Components.interfaces.nsIWindowWatcher).
+			                      openWindow(null, 'chrome://global/content/alerts/alert.xul',
+			                                  '_blank', 'chrome,titlebar=no,popup=yes', null);
+			  win.arguments = [image,  title, msg, true, ''];
+			  
+		}
 	},
 
 	erForewardItemRequestError: function _erForewardItemRequestError(aForewardItemRequest, aCode, aMsg)
